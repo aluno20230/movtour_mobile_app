@@ -10,7 +10,7 @@ function App() {
     <NavigationContainer>
     <Drawer.Navigator initialRouteName="Mapa">
       <Drawer.Screen name="Mapa" component={Mapa} />
-      <Drawer.Screen name="About" component={About} />
+      <Drawer.Screen name="Sobre nós" component={About} />
     </Drawer.Navigator>
   </NavigationContainer>
   );

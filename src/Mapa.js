@@ -35,7 +35,7 @@ import {
   const styles = StyleSheet.create({
     Container: {
       flex:1,
-      padding: 10,
+      padding: 3,
       backgroundColor: 'grey'
     
     },
@@ -43,24 +43,7 @@ import {
       flex: 2,
       
     },
-    ButtonArea: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      alignItems: 'center'
-    },
-    Button: {
-      width: 80,
-      padding: 10,
-      borderRadius: 10,
-      backgroundColor: 'black',
-      alignItems: 'center'
-    },
-    ButtonText: {
-      color: 'white',
-      fontWeight: 'bold',
-      fontSize: 14,
-    }
+
   });
   
   export default App;

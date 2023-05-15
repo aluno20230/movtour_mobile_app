@@ -10,31 +10,27 @@ const html_script = `
 	
 	<title>Quick Start - Leaflet</title>
 	
-	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-
-	<style>
-		html, body {
-			height: 100%;
-			margin: 0;
-		}
-		.leaflet-container {
-			height: 400px;
-			width: 600px;
-			max-width: 100%;
-			max-height: 100%;
-		}
-	</style>
-
-	
+	<link 
+	rel="stylesheet" 
+	href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css"
+/>
+<style>
+	body {
+		padding: 0;
+		margin: 0;
+	}
+	html, body, #map {
+		height: 100%;
+		width: 100%;
+	}
+</style>
 </head>
 <body>
+<div id="map"></div>
 
-
-
-<div id="map" style="width: 600px; height: 400px;"></div>
+<script
+	src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js">
+</script>
 <script>
 
 	const map = L.map('map').setView([39.6054, -8.4133], 15);

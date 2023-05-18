@@ -10,12 +10,17 @@ export default function About() {
         <SafeAreaView>
         <ScrollView>
 
-        <Text style={styles.text}>
-             Sistema desenvolvido no âmbito do Projeto "MovTour - Turismo e Cultura com e para a Sociedade".
-        </Text>
-        <Text style={styles.text}>
-        Desenvolvido em parceria entre o Instituto Politécnico de Tomar, o Instituito Politécnico de Santarém e o Centro de Estudos Sociais da Universidade de Coimbra e cofinanciado pelo Programa Operacional Competitividade e Internacionalização, Portugal 2020 e União Europeia através do Fundo Europeu de Desenvolvimento Regional.
-        </Text>
+        <View style={styles.container}>
+            <Text style={styles.title}>Sobre nós</Text>
+            <View style={styles.aboutUsContainer}>
+              <Text style={styles.text}>
+              Sistema desenvolvido no âmbito do Projeto "MovTour - Turismo e Cultura com e para a Sociedade".
+              </Text>
+
+              <Text style={[styles.text, {marginTop: 10}]}>
+              Desenvolvido em parceria entre o Instituto Politécnico de Tomar, o Instituito Politécnico de Santarém e o Centro de Estudos Sociais da Universidade de Coimbra e cofinanciado pelo Programa Operacional Competitividade e Internacionalização, Portugal 2020 e União Europeia através do Fundo Europeu de Desenvolvimento Regional.
+              </Text>
+          </View>
         
         <View style={styles.imagesContainer}>
             <View style={styles.imageWrapper}>
@@ -81,6 +86,7 @@ export default function About() {
                 source={require('./config/pictures/fundoEuropeu.png')}
               />
             </View>
+        </View>
         </View>
         </ScrollView>
         </SafeAreaView>

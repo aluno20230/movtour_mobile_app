@@ -1,6 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import About from './src/About';
 import Mapa from './src/Mapa';
+import Lingua from './src/Lingua';
 import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
@@ -12,6 +13,7 @@ function App() {
     <Drawer.Navigator initialRouteName="Mapa">
       <Drawer.Screen name="Mapa" component={Mapa} />
       <Drawer.Screen name="Sobre nós" component={About} />
+      <Drawer.Screen name="Língua" component={Lingua} />
     </Drawer.Navigator>
   </NavigationContainer>
   );

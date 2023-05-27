@@ -3,19 +3,29 @@ import React from 'react';
 import { StyleSheet, Image } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
+
 
 export default function About() {
+
+  const { t, i18n } = useTranslation();
+
     return (
 
         <SafeAreaView>
         <ScrollView>
 
-        <Text style={styles.text}>
-             Sistema desenvolvido no âmbito do Projeto "MovTour - Turismo e Cultura com e para a Sociedade".
-        </Text>
-        <Text style={styles.text}>
-        Desenvolvido em parceria entre o Instituto Politécnico de Tomar, o Instituito Politécnico de Santarém e o Centro de Estudos Sociais da Universidade de Coimbra e cofinanciado pelo Programa Operacional Competitividade e Internacionalização, Portugal 2020 e União Europeia através do Fundo Europeu de Desenvolvimento Regional.
-        </Text>
+        <View style={styles.container}>
+            <Text style={styles.title}>{t('Sobre nós')}</Text>
+            <View style={styles.aboutUsContainer}>
+              <Text style={styles.text}>
+              {t("Sistema desenvolvido no âmbito do Projeto 'MovTour - Turismo e Cultura com e para a Sociedade'.")}
+              </Text>
+
+              <Text style={[styles.text, {marginTop: 10}]}>
+              {t('Desenvolvido em parceria entre o Instituto Politécnico de Tomar, o Instituito Politécnico de Santarém e o Centro de Estudos Sociais da Universidade de Coimbra e cofinanciado pelo Programa Operacional Competitividade e Internacionalização, Portugal 2020 e União Europeia através do Fundo Europeu de Desenvolvimento Regional.')}
+              </Text>
+          </View>
         
         <View style={styles.imagesContainer}>
             <View style={styles.imageWrapper}>
@@ -81,6 +91,7 @@ export default function About() {
                 source={require('./config/pictures/fundoEuropeu.png')}
               />
             </View>
+        </View>
         </View>
         </ScrollView>
         </SafeAreaView>

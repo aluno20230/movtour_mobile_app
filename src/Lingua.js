@@ -36,8 +36,8 @@ const App = () => {
     <View>
         <Button title={t('Português')} onPress={() => changeLanguage('pt')} />
         <Button title={t('Inglês')} onPress={() => changeLanguage('en')} />
-        <Button title={t('Francês')} onPress={() => Alert.alert('Selecionou o Francês')} />
-        <Button title={t('Alemão')} onPress={() => Alert.alert('Selecionou o Alemão')} />
+        <Button title={t('Francês')} onPress={() => changeLanguage('fr')} />
+        <Button title={t('Alemão')} onPress={() => changeLanguage('de')} />
     </View>
 
   );

@@ -6,6 +6,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import './src/config/I18N/i18n';
 import { useTranslation } from 'react-i18next';
+import React from 'react';
+import TipodeConteudo from './src/TipodeConteudo';
+
 
 const Drawer = createDrawerNavigator();
 
@@ -23,6 +26,7 @@ function App() {
       <Drawer.Screen name={t('Mapa')} component={Mapa} />
       <Drawer.Screen name={t('Sobre nós')} component={About} />
       <Drawer.Screen name={t('Língua')} component={Lingua} />
+      <Drawer.Screen name={t('Tipo de conteúdo')} component={TipodeConteudo} />
     </Drawer.Navigator>
   </NavigationContainer>
   );

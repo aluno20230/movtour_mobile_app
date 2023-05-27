@@ -34,10 +34,10 @@ const App = () => {
     return (
 
     <View>
-        <Button title="Português" onPress={() => changeLanguage('pt')} />
-        <Button title="Inglês" onPress={() => changeLanguage('en')} />
-        <Button title="Francês" onPress={() => Alert.alert('Selecionou o Francês')} />
-        <Button title="Alemão" onPress={() => Alert.alert('Selecionou o Alemão')} />
+        <Button title={t('Português')} onPress={() => changeLanguage('pt')} />
+        <Button title={t('Inglês')} onPress={() => changeLanguage('en')} />
+        <Button title={t('Francês')} onPress={() => Alert.alert('Selecionou o Francês')} />
+        <Button title={t('Alemão')} onPress={() => Alert.alert('Selecionou o Alemão')} />
     </View>
 
   );

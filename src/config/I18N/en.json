@@ -4,6 +4,15 @@
         "Sistema desenvolvido no âmbito do Projeto 'MovTour - Turismo e Cultura com e para a Sociedade'.": "System developed under the project 'MovTour - Tourism and Culture and for Society'.",
         "Desenvolvido em parceria entre o Instituto Politécnico de Tomar, o Instituito Politécnico de Santarém e o Centro de Estudos Sociais da Universidade de Coimbra e cofinanciado pelo Programa Operacional Competitividade e Internacionalização, Portugal 2020 e União Europeia através do Fundo Europeu de Desenvolvimento Regional.": "Developed in partnership between the Polytechnic Institute of Tomar, the Polytechnic Institute of Santarém and the Center for Social Studies of the University of Coimbra and co-financed by the Operational Program for Competitiveness and Internationalization, Portugal 2020 and the European Union through the European Regional Development Fund.",
         "Mapa": "Map",
-        "Língua": "Language"
+        "Língua": "Language",
+        "Português": "Portuguese",
+        "Inglês": "English",
+        "Francês": "French",
+        "Alemão": "German",
+        "Iniciação" : "Initiation",
+        "Divulgação" : "Disclosure",
+        "Aprofundamento" : "Deepening",
+        "Investigação" : "Investigation",
+        "Tipo de conteúdo" : "Content type"
     }
 }

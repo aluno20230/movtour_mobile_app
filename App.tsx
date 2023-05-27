@@ -4,16 +4,25 @@ import Mapa from './src/Mapa';
 import Lingua from './src/Lingua';
 import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View, Image } from 'react-native';
+import './src/config/I18N/i18n';
+import { useTranslation } from 'react-i18next';
 
 const Drawer = createDrawerNavigator();
 
 function App() {
+
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = value => {
+    console.log(value);
+  }
+
   return (
     <NavigationContainer>
     <Drawer.Navigator initialRouteName="Mapa">
-      <Drawer.Screen name="Mapa" component={Mapa} />
-      <Drawer.Screen name="Sobre nós" component={About} />
-      <Drawer.Screen name="Língua" component={Lingua} />
+      <Drawer.Screen name={t('Mapa')} component={Mapa} />
+      <Drawer.Screen name={t('Sobre nós')} component={About} />
+      <Drawer.Screen name={t('Língua')} component={Lingua} />
     </Drawer.Navigator>
   </NavigationContainer>
   );

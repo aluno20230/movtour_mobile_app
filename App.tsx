@@ -8,6 +8,7 @@ import './src/config/I18N/i18n';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import TipodeConteudo from './src/TipodeConteudo';
+import Monumentos from './src/Monumentos';
 
 
 const Drawer = createDrawerNavigator();
@@ -22,7 +23,8 @@ function App() {
 
   return (
     <NavigationContainer>
-    <Drawer.Navigator initialRouteName="Mapa">
+    <Drawer.Navigator initialRouteName="Monumentos">
+      <Drawer.Screen name={t('Monumentos')} component={Monumentos} />
       <Drawer.Screen name={t('Mapa')} component={Mapa} />
       <Drawer.Screen name={t('Sobre nós')} component={About} />
       <Drawer.Screen name={t('Língua')} component={Lingua} />

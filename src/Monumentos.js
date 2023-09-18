@@ -58,6 +58,7 @@ const ListaMonumentos = () => {
                 style={{ width: 200, height: 150 }}
               />
               <Text>{item.name}</Text>
+
               {/* Aqui você pode renderizar as descrições adicionais, beacons, filmes, etc., se necessário */}
             </View>
             </TouchableOpacity>

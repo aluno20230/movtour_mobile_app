@@ -9,28 +9,47 @@ import { useTranslation } from 'react-i18next';
 import React from 'react';
 import TipodeConteudo from './src/TipodeConteudo';
 import Monumentos from './src/Monumentos';
-
+import { createStackNavigator } from '@react-navigation/stack';
+import ListaMonumentos from './src/Monumentos'; // Importe a lista de monumentos
+import DetalhesMonumento from './src/DetalhesMonumento'; // Importe os detalhes de monumentos
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+function StackNavigator() {
+  const { t, i18n } = useTranslation();
+  return (
+          <Stack.Navigator>
+        <Stack.Screen name={t('Monumentos')}  component={ListaMonumentos} />
+        <Stack.Screen name={t('DetalhesMonumento')} component={DetalhesMonumento} />
+      </Stack.Navigator>
+    
+  );
+}
+
+function DrawerNavigator() {
+  const { t, i18n } = useTranslation();
+  return (
+      <Drawer.Navigator initialRouteName="Monumentos">
+      <Drawer.Screen name={t('Monumentos')} component={StackNavigator} />
+      <Drawer.Screen name={t('Mapa')} component={Mapa} />
+      <Drawer.Screen name={t('Sobre nós')} component={About} />
+      <Drawer.Screen name={t('Língua')} component={Lingua} />
+      <Drawer.Screen name={t('Tipo de conteúdo')} component={TipodeConteudo} />
+    </Drawer.Navigator>
+  );
+}
 
 function App() {
-
-  const { t, i18n } = useTranslation();
-
   const changeLanguage = value => {
     console.log(value);
   }
 
   return (
     <NavigationContainer>
-    <Drawer.Navigator initialRouteName="Monumentos">
-      <Drawer.Screen name={t('Monumentos')} component={Monumentos} />
-      <Drawer.Screen name={t('Mapa')} component={Mapa} />
-      <Drawer.Screen name={t('Sobre nós')} component={About} />
-      <Drawer.Screen name={t('Língua')} component={Lingua} />
-      <Drawer.Screen name={t('Tipo de conteúdo')} component={TipodeConteudo} />
-    </Drawer.Navigator>
-  </NavigationContainer>
+       <DrawerNavigator />
+    </NavigationContainer>
+
   );
 }
 

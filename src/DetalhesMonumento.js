@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import './config/I18N/i18n';
+import { useTranslation } from 'react-i18next';
 
 const DetalhesMonumento = ({ route }) => {
   const { monument } = route.params;
@@ -12,7 +14,6 @@ const DetalhesMonumento = ({ route }) => {
         style={styles.image}
       />
       <Text>{monument.name}</Text>
-      <Text>{monument.category}</Text>
       <Text>{monument.description}</Text>
     </View>
   );

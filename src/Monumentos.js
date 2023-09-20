@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
-  Button,
   View,
   FlatList,
-  SafeAreaView,
   Text,
-  Alert,
   Image,
   Dimensions,
-  TouchableOpacity 
+  TouchableOpacity,
 
 } from 'react-native';
 
@@ -19,7 +16,18 @@ import { useNavigation } from '@react-navigation/native';
 
 const { width } = Dimensions.get('window');
 
- 
+const MAX_TEXT_LENGTH = 30; 
+
+const TruncatedText = ({ text, style }) => {
+  if (text.length <= MAX_TEXT_LENGTH) {
+    // If the text is within the limit, display it as is
+    return <Text style={style}>{text}</Text>;
+  } else {
+    // If the text exceeds the limit, truncate it and add an ellipsis
+    const truncatedText = text.substring(0, MAX_TEXT_LENGTH) + '...';
+    return <Text style={style}>{truncatedText}</Text>;
+  }
+};
 
 const ListaMonumentos = () => {
 
@@ -36,6 +44,7 @@ const ListaMonumentos = () => {
         })
         .catch((error) => {
           console.error('Erro ao buscar os dados:', error);
+          setIsLoading(false); 
         });
     }, []);
 
@@ -45,7 +54,7 @@ const ListaMonumentos = () => {
     };
   
     return (
-      <View>
+      <View style={styles.container}>
         <FlatList
           data={data}
           keyExtractor={(item) => item.id.toString()}
@@ -57,9 +66,7 @@ const ListaMonumentos = () => {
                 source={{ uri: item.cover_image }}
                 style={{ width: 200, height: 150 }}
               />
-              <Text>{item.name}</Text>
-
-              {/* Aqui você pode renderizar as descrições adicionais, beacons, filmes, etc., se necessário */}
+              <TruncatedText text={item.name} style={styles.customText}/>
             </View>
             </TouchableOpacity>
           )}
@@ -72,7 +79,7 @@ const ListaMonumentos = () => {
     container: {
       flex: 1,
       padding: 16,
-      backgroundColor: '#fff',
+      backgroundColor: '#E8E8E8',
     },
     itemContainer: {
       flex: 1,
@@ -99,6 +106,11 @@ const ListaMonumentos = () => {
       color: '#fff',
       padding: 4,
       borderRadius: 4,
+    },
+    customText: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      color: '#CB7C05',
     },
   });
   

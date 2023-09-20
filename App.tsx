@@ -8,20 +8,26 @@ import './src/config/I18N/i18n';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import TipodeConteudo from './src/TipodeConteudo';
-import Monumentos from './src/Monumentos';
 import { createStackNavigator } from '@react-navigation/stack';
-import ListaMonumentos from './src/Monumentos'; // Importe a lista de monumentos
-import DetalhesMonumento from './src/DetalhesMonumento'; // Importe os detalhes de monumentos
+import ListaMonumentos from './src/Monumentos'; // Importa a lista de monumentos
+import DetalhesMonumento from './src/DetalhesMonumento'; // Importea os detalhes de monumentos
+import MapaMonumento  from './src/MapaMonumento';// Importa o mapa com a localização de monumentos
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+
 
 function StackNavigator() {
   const { t, i18n } = useTranslation();
   return (
           <Stack.Navigator>
-        <Stack.Screen name={t('Monumentos')}  component={ListaMonumentos} />
-        <Stack.Screen name={t('DetalhesMonumento')} component={DetalhesMonumento} />
+        <Stack.Screen name={t(' Monumentos')}  component={ListaMonumentos} />
+        <Stack.Screen name={t('DetalhesMonumento')} component={DetalhesMonumento} options={{
+          title: '', 
+            }} />  
+        <Stack.Screen name="MapaMonumento" component={MapaMonumento} options={{
+          title: '', 
+            }} /> 
       </Stack.Navigator>
     
   );
@@ -31,7 +37,22 @@ function DrawerNavigator() {
   const { t, i18n } = useTranslation();
   return (
       <Drawer.Navigator initialRouteName="Monumentos">
-      <Drawer.Screen name={t('Monumentos')} component={StackNavigator} />
+      <Drawer.Screen name={t('Monumentos')} component={StackNavigator} 
+      options={{
+          headerStyle: {
+            backgroundColor: 'transparent', // Make the header background transparent
+              },
+              headerTitle: () => (
+                  <Image
+                    source={require('./src/config/pictures/movtour_logo.png')}
+                    style={{
+                    width: 50, 
+                    height: 50,
+                  }}
+                />
+               ),
+            }} /> 
+    
       <Drawer.Screen name={t('Mapa')} component={Mapa} />
       <Drawer.Screen name={t('Sobre nós')} component={About} />
       <Drawer.Screen name={t('Língua')} component={Lingua} />

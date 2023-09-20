@@ -15,8 +15,6 @@ import {
 
   const App = () => {
 
-    
-  
         return (
 
         <>
@@ -31,7 +29,6 @@ import {
       );
     };
     
-  
   const styles = StyleSheet.create({
     Container: {
       flex:1,

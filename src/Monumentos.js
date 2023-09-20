@@ -64,7 +64,7 @@ const ListaMonumentos = () => {
             <View>
               <Image
                 source={{ uri: item.cover_image }}
-                style={{ width: 200, height: 150 }}
+                style={styles.image}
               />
               <TruncatedText text={item.name} style={styles.customText}/>
             </View>
@@ -93,9 +93,10 @@ const ListaMonumentos = () => {
       position: 'relative', // Permite que o texto seja posicionado sobre a imagem
     },
     image: {
-      width: width / 2 - 16, // Divide a largura da tela por 2 e subtrai o espaçamento
-      height: 150,
-      resizeMode: 'cover',
+      width: 200,
+       height: 150,
+      borderWidth: 2, 
+      borderColor: '#0066CC', 
     },
     imageText: {
       position: 'absolute',

@@ -21,12 +21,24 @@ function StackNavigator() {
   const { t, i18n } = useTranslation();
   return (
           <Stack.Navigator>
-        <Stack.Screen name={t(' Monumentos')}  component={ListaMonumentos} />
+        <Stack.Screen name={t(' Monumentos')}  component={ListaMonumentos} options={{ 
+          headerTitleAlign: 'center', // Center align the header title
+          headerTitleStyle: {
+            color: '#CC6600', // Set the color of the header title text
+            fontSize: 30, 
+          },
+          headerStyle: {backgroundColor: '#E8E8E8', 
+              }
+            }} />  
         <Stack.Screen name={t('DetalhesMonumento')} component={DetalhesMonumento} options={{
-          title: '', 
+          title: '',
+          headerStyle: {backgroundColor: '#E8E8E8', // Make the header background transparent
+              }, 
             }} />  
         <Stack.Screen name="MapaMonumento" component={MapaMonumento} options={{
           title: '', 
+          headerStyle: {backgroundColor: '#E8E8E8', // Make the header background transparent
+        },
             }} /> 
       </Stack.Navigator>
     
@@ -39,8 +51,9 @@ function DrawerNavigator() {
       <Drawer.Navigator initialRouteName="Monumentos">
       <Drawer.Screen name={t('Monumentos')} component={StackNavigator} 
       options={{
+        headerTitleAlign: 'center', // Center align the header title
           headerStyle: {
-            backgroundColor: 'transparent', // Make the header background transparent
+            backgroundColor: '#E8E8E8', // Make the header background transparent
               },
               headerTitle: () => (
                   <Image

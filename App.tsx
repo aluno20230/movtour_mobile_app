@@ -66,10 +66,70 @@ function DrawerNavigator() {
                ),
             }} /> 
     
-      <Drawer.Screen name={t('Mapa')} component={Mapa} />
-      <Drawer.Screen name={t('Sobre nós')} component={About} />
-      <Drawer.Screen name={t('Língua')} component={Lingua} />
-      <Drawer.Screen name={t('Tipo de conteúdo')} component={TipodeConteudo} />
+      <Drawer.Screen name={t('Mapa')} component={Mapa} 
+      options={{
+        headerTitleAlign: 'center', // Center align the header title
+          headerStyle: {
+            backgroundColor: '#E8E8E8', // Make the header background transparent
+              },
+              headerTitle: () => (
+                  <Image
+                    source={require('./src/config/pictures/movtour_logo.png')}
+                    style={{
+                    width: 50, 
+                    height: 50,
+                  }}
+                />
+               ),
+            }}/>
+      <Drawer.Screen name={t('Sobre nós')} component={About} 
+      options={{
+        headerTitleAlign: 'center', // Center align the header title
+          headerStyle: {
+            backgroundColor: '#E8E8E8', // Make the header background transparent
+              },
+              headerTitle: () => (
+                  <Image
+                    source={require('./src/config/pictures/movtour_logo.png')}
+                    style={{
+                    width: 50, 
+                    height: 50,
+                  }}
+                />
+               ),
+            }}/>
+      <Drawer.Screen name={t('Língua')} component={Lingua} 
+      options={{
+        headerTitleAlign: 'center', // Center align the header title
+          headerStyle: {
+            backgroundColor: '#E8E8E8', // Make the header background transparent
+              },
+              headerTitle: () => (
+                  <Image
+                    source={require('./src/config/pictures/movtour_logo.png')}
+                    style={{
+                    width: 50, 
+                    height: 50,
+                  }}
+                />
+               ),
+            }}/>
+      <Drawer.Screen name={t('Tipo de conteúdo')} component={TipodeConteudo} 
+      options={{
+        headerTitleAlign: 'center', // Center align the header title
+          headerStyle: {
+            backgroundColor: '#E8E8E8', // Make the header background transparent
+              },
+              headerTitle: () => (
+                  <Image
+                    source={require('./src/config/pictures/movtour_logo.png')}
+                    style={{
+                    width: 50, 
+                    height: 50,
+                  }}
+                />
+               ),
+            }}/>
     </Drawer.Navigator>
   );
 }

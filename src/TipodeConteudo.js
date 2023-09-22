@@ -21,6 +21,7 @@ const App = () => {
     return (
 
     <View>
+      <Text style={styles.title}>{t('Tipo de conteúdo')}</Text>
         <Button title={t('Iniciação')} onPress={() => Alert.alert('Tipo de conteúdo selecionado: Iniciação')} />
         <Button title={t('Divulgação')} onPress={() => Alert.alert('Tipo de conteúdo selecionado: Divulgação')} />
         <Button title={t('Aprofundamento')} onPress={() => Alert.alert('Tipo de conteúdo selecionado: Aprofundamento')} />
@@ -29,5 +30,16 @@ const App = () => {
 
   );
 };
+
+const styles = StyleSheet.create({
+    
+  title:{
+    fontSize: 24,
+    marginBottom:20,
+    textAlign: 'center',
+    color: 'black'
+  }
+
+})
 
 export default App;

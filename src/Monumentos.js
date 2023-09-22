@@ -61,7 +61,7 @@ const ListaMonumentos = () => {
           numColumns={2} // Define 2 colunas por linha
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => handleImageClick(item)}>
-            <View>
+            <View style={styles.elemento}>
               <Image
                 source={{ uri: item.cover_image }}
                 style={styles.image}
@@ -78,7 +78,7 @@ const ListaMonumentos = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      padding: 16,
+      padding: 5,
       backgroundColor: '#E8E8E8',
     },
     itemContainer: {
@@ -93,10 +93,12 @@ const ListaMonumentos = () => {
       position: 'relative', // Permite que o texto seja posicionado sobre a imagem
     },
     image: {
-      width: 200,
-       height: 150,
+      width: (width-38)/2,
+      //width:200,
+      height: 150,
       borderWidth: 2, 
       borderColor: '#0066CC', 
+      
     },
     imageText: {
       position: 'absolute',
@@ -111,7 +113,12 @@ const ListaMonumentos = () => {
     customText: {
       fontSize: 14,
       fontWeight: 'bold',
-      color: '#CB7C05',
+      color: '#CB7C05',   
+      width: (width-38)/2, 
+    },
+    elemento: {
+      paddingRight: 5,
+      paddingLeft: 7,
     },
   });
   

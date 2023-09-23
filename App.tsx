@@ -6,12 +6,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import './src/config/I18N/i18n';
 import { useTranslation } from 'react-i18next';
-import React from 'react';
 import TipodeConteudo from './src/TipodeConteudo';
 import { createStackNavigator } from '@react-navigation/stack';
 import ListaMonumentos from './src/Monumentos'; // Importa a lista de monumentos
 import DetalhesMonumento from './src/DetalhesMonumento'; // Importea os detalhes de monumentos
 import MapaMonumento  from './src/MapaMonumento';// Importa o mapa com a localização de monumentos
+import { PermissionsAndroid } from 'react-native';
+import React, { useEffect } from 'react';
+import { startBeaconScan } from './src/BLE';
+
+
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -135,10 +139,102 @@ function DrawerNavigator() {
 }
 
 function App() {
+  
   const changeLanguage = value => {
     console.log(value);
   }
 
+  useEffect(() => {
+
+    async function requestPermissions() {
+
+      //Localização
+      try {
+        
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Location Permission',
+            message: 'App needs access to location to detect beacons.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+    
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Location Permission granted.');
+          
+        } else {
+          console.log('Location Permission denied.');
+        }
+      } catch (err) {
+        console.warn(err);
+        console.error('Location Permission error:', err);
+      }
+
+      //Bluetooth scan
+      try {
+        
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+          {
+            title: 'Bluetooth scan Permission',
+            message: 'App needs access to Bluetooth scan to detect beacons.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+    
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Bluetooth scan Permission granted.');
+          
+        } else {
+          console.log('Bluetooth scan Permission denied.');
+        }
+      } catch (err) {
+        console.warn(err);
+        console.error('Bluetooth scan Permission error:', err);
+      }
+
+      //Bluetooth connect
+      try {
+        
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+          {
+            title: 'Bluetooth connect Permission',
+            message: 'App needs access to Bluetooth connect to detect beacons.',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+    
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Bluetooth connect Permission granted.');
+          // Start beacon detection when the app loads
+          startBeaconScan();
+          
+        } else {
+          console.log('Bluetooth connect Permission denied.');
+        }
+      } catch (err) {
+        console.warn(err);
+        console.error('Bluetooth connect Permission error:', err);
+      }
+
+    }
+    
+    // Call the function to request permissions when the app starts
+    requestPermissions();
+
+
+    
+    
+  }, []);
+  
   return (
     <NavigationContainer>
        <DrawerNavigator />

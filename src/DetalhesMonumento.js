@@ -5,7 +5,7 @@ import './config/I18N/i18n';
 import { useTranslation } from 'react-i18next';
 import he from 'he';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const DetalhesMonumento = ({ route }) => {
   const { monument } = route.params;
@@ -55,10 +55,11 @@ const DetalhesMonumento = ({ route }) => {
       style={styles.image}
     />
     <TouchableOpacity onPress={handleButtonPress} style={styles.button}>
-    <Icon name="location-pin" size={24} color="orange" /> 
+    <Icon name="location" size={24} color="orange" /> 
       </TouchableOpacity>
     <ScrollView>
     <Text>{t(decodedDescription)}</Text>
+
     </ScrollView>
     
   </View>

@@ -9,10 +9,8 @@ import{ WebView } from 'react-native-webview';
 import html_script from './html_script'
 
 const MapaMonumento = ({ route }) => {
-    const { monument } = route.params;
     const { t, i18n } = useTranslation();
     const { htmlScript } = route.params;
-
 
   return (
     <>

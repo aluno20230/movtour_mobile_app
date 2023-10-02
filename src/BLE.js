@@ -18,6 +18,7 @@ function startBeaconScan() {
     if (device.id == 'C4:F3:12:19:CF:5E') {
       console.log('Encontrei o beacon do Rui, com o MAC:', device.id);
       displayNotification();
+      //navigation.navigate('DetalhesMonumento', { monument: item });
     }
 
     if (device.id == 'C4:F3:12:19:CF:0F') {

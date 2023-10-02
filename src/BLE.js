@@ -1,5 +1,5 @@
 import { BleManager } from 'react-native-ble-plx';
-import { Alert } from 'react-native';
+import { displayNotification } from './Notification';
 
 const bleManager = new BleManager();
 
@@ -17,10 +17,12 @@ function startBeaconScan() {
     // Check if the detected device is a beacon based on its properties
     if (device.id == 'C4:F3:12:19:CF:5E') {
       console.log('Encontrei o beacon do Rui, com o MAC:', device.id);
+      displayNotification();
     }
 
     if (device.id == 'C4:F3:12:19:CF:0F') {
         console.log('Encontrei o beacon do Rafael, com o MAC:', device.id);
+        displayNotification();
       }
 
   });

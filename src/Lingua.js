@@ -34,6 +34,7 @@ const App = () => {
     return (
 
     <View>
+        <Text style={styles.title}>{t('Língua')}</Text>
         <Button title={t('Português')} onPress={() => changeLanguage('pt')} />
         <Button title={t('Inglês')} onPress={() => changeLanguage('en')} />
         <Button title={t('Francês')} onPress={() => changeLanguage('fr')} />
@@ -42,5 +43,16 @@ const App = () => {
 
   );
 };
+
+const styles = StyleSheet.create({
+    
+    title:{
+      fontSize: 24,
+      marginBottom:20,
+      textAlign: 'center',
+      color: 'black'
+    }
+
+  })
 
 export default App;

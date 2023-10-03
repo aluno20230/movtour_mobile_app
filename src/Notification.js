@@ -16,7 +16,7 @@ async function displayNotification() {
     await notifee.displayNotification({
       id: '7',
       title: 'MovTour',
-      body: 'You are near a monument!',
+      body: 'Está perto de um monumento!',
       android: { channelId, smallIcon: 'iconbk' }
     });
   

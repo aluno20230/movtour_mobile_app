@@ -1,5 +1,7 @@
 import { BleManager } from 'react-native-ble-plx';
 import { displayNotification } from './Notification';
+import RNFetchBlob from 'rn-fetch-blob';
+import {stringToBytes} from 'convert-string';
 
 const bleManager = new BleManager();
 
@@ -12,17 +14,28 @@ function startBeaconScan() {
       return;
     }
 
+    
+      const base64 = RNFetchBlob.base64;
+      const advertisingData = stringToBytes(base64.decode(device.manufacturerData),);
+
+      const rssi = device.rssi;
+      const name = device.localName;
+      const major = advertisingData[21]; // => this is major data
+      const minor = advertisingData[23]; // this is minor data
+
+      //console.log('major: ', major);
+      //console.log('minor: ', minor);
+
     //console.log('Found BLE device:', device.name, device.id);
 
     // Check if the detected device is a beacon based on its properties
-    if (device.id == 'C4:F3:12:19:CF:5E') {
-      console.log('Encontrei o beacon do Rui, com o MAC:', device.id);
+    if (major == 0 && minor == 70) {
+      console.log('Encontrei o beacon do Rui, com o major:', major, 'e o minor:', minor);
       displayNotification();
-      //navigation.navigate('DetalhesMonumento', { monument: item });
     }
 
-    if (device.id == 'C4:F3:12:19:CF:0F') {
-        console.log('Encontrei o beacon do Rafael, com o MAC:', device.id);
+    if (major == 0 && minor == 8) {
+        console.log('Encontrei o beacon do Rafael, com o major:', major, 'e o minor:', minor);
         displayNotification();
       }
 

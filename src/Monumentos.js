@@ -106,8 +106,6 @@ const styles = StyleSheet.create({
     color: '#CB7C05',
     width: '100%', // Adjust text width to occupy the entire container
     overflow: 'hidden', // Hide any text that overflows the width
-    whiteSpace: 'nowrap', // Prevent text from wrapping to the next line
-    textOverflow: 'ellipsis', // Show ellipsis for truncated text
     textAlign: 'center'
   },
   poiContainer: {

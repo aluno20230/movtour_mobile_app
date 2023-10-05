@@ -22,7 +22,7 @@ const DetalhesMonumento = ({ route }) => {
     'Divulgação',
     'Aprofundamento',
     'Investigação',
-  ].map((contentType) => t(contentType)); // Translate content types
+  ].map((contentType) => contentType); // Translate content types
 
   const handleMovieIconPress = (imdbUrl) => {
     if (imdbUrl) {
@@ -123,11 +123,12 @@ useEffect(() => {
         
         {poi.movies.length > 0 && (
           <>
-            <Text style={styles.movieHeaderText}>Filmes ou séries gravados neste local:</Text>
+            <Text style={styles.movieHeaderText}>{t('Filmes ou séries gravados neste local:')}</Text>
+
             <ScrollView horizontal={true}>
             <View style={styles.movieList}>
-              {poi.movies.map((movie) => (
-                <View key={movie.id} style={styles.movieItem}>
+              {poi.movies.map((movie, index) => (
+                 <View key={`${movie.id}-${index}`} style={styles.movieItem}>
                   <TouchableOpacity onPress={() => handleMovieIconPress(movie.imdb)}>
                     <Image source={{ uri: movie.poster }} style={styles.poster} />
                   </TouchableOpacity>

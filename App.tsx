@@ -13,6 +13,7 @@ import DetalhesMonumento from './src/DetalhesMonumento'; // Importea os detalhes
 import MapaMonumento  from './src/MapaMonumento';// Importa o mapa com a localização de monumentos
 import { PermissionsAndroid } from 'react-native';
 import React, { useEffect } from 'react';
+import { startBeaconScan } from './src/BLE';
 
 
 
@@ -214,7 +215,7 @@ function App() {
     
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           console.log('Bluetooth connect Permission granted.');
-         
+          startBeaconScan();
           
         } else {
           console.log('Bluetooth connect Permission denied.');

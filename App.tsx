@@ -13,13 +13,13 @@ import DetalhesMonumento from './src/DetalhesMonumento'; // Importea os detalhes
 import MapaMonumento  from './src/MapaMonumento';// Importa o mapa com a localização de monumentos
 import { PermissionsAndroid } from 'react-native';
 import React, { useEffect } from 'react';
-import { startBeaconScan } from './src/BLE';
 
 
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
+  
 
 function StackNavigator() {
   const { t, i18n } = useTranslation();
@@ -34,10 +34,10 @@ function StackNavigator() {
           headerStyle: {backgroundColor: '#E8E8E8', 
               }
             }} />  
-        <Stack.Screen name={t('DetalhesMonumento')} component={DetalhesMonumento} options={{
+        <Stack.Screen name={t('DetalhesMonumento')} component={DetalhesMonumento}  options={{
           title: '',
           headerStyle: {backgroundColor: '#E8E8E8', // Make the header background transparent
-              }, 
+              },
             }} />  
         <Stack.Screen name="MapaMonumento" component={MapaMonumento} options={{
           title: '', 
@@ -214,8 +214,7 @@ function App() {
     
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           console.log('Bluetooth connect Permission granted.');
-          // Start beacon detection when the app loads
-          startBeaconScan();
+         
           
         } else {
           console.log('Bluetooth connect Permission denied.');

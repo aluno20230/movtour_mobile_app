@@ -4,8 +4,59 @@ import './config/I18N/i18n';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NativeScreen } from 'react-native-screens';
+//import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
+
+import { BleManager } from 'react-native-ble-plx';
+import { displayNotification } from './Notification';
+import RNFetchBlob from 'rn-fetch-blob';
+import {stringToBytes} from 'convert-string';
+import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
+//import React, { useEffect, useState } from 'react';
+//import { NativeScreen } from 'react-native-screens';
+
 
 const { width } = Dimensions.get('window');
+const bleManager = new BleManager();
+
+// Scan for BLE devices (beacons) and listen for advertisements
+function startBeaconScan() {
+
+  bleManager.startDeviceScan(null, null, (error, device) => {
+    if (error) {
+      console.error('BLE scan error:', error);
+      console.error('Error message:', error.message);
+      return;
+    }
+
+    
+      const base64 = RNFetchBlob.base64;
+      const advertisingData = stringToBytes(base64.decode(device.manufacturerData),);
+      const rssi = device.rssi;
+      const name = device.localName;
+      const majorM = advertisingData[21]; // => this is major data
+      const minorM = advertisingData[23]; // this is minor data
+
+      //console.log('majorM: ', majorM);
+      //console.log('minorM: ', minorM);
+
+      //console.log('Found BLE device:', device.name, device.id);
+
+    // Check if the detected device is a beacon based on its properties
+    if (majorM == 0 && minorM == 70) {
+      console.log('Encontrei o beacon do Rui, com o major:', majorM, 'e o minor:', minorM);
+      displayNotification();
+    }
+
+    if (majorM == 0 && minorM == 8) {
+        console.log('Encontrei o beacon do Rafael, com o major:', majorM, 'e o minor:', minorM);
+        displayNotification();
+      }
+
+
+  });
+}
+
 
 
 const ListaMonumentos = () => {
@@ -47,6 +98,11 @@ const ListaMonumentos = () => {
         // Flatten the data array to get all POIs
         const allPois = jsonData.monuments.flatMap((monument) => monument.pois);
         setData(allPois);
+        const beaconsData = jsonData.monuments.map((monument) => ({
+          beacon: monument.beacons || '', // Replace 'monument.beacons' with the correct path to your beacon data
+          major: monument.major || 0, // Replace 'monument.major' with the correct path to your major data
+          minor: monument.minor || 0, // Replace 'monument.minor' with the correct path to your minor data
+        }));
   
         // Store the fetched data locally for offline use
         AsyncStorage.setItem('cachedData', JSON.stringify(allPois))
@@ -62,9 +118,46 @@ const ListaMonumentos = () => {
       });
   }, []);
 
+
+  
+  useEffect(() => {
+
+    return notifee.onForegroundEvent(({ type, detail }) => {
+
+      switch (type) {
+          case EventType.DISMISSED:
+              console.log('User dismissed notification');
+              break;
+          case EventType.PRESS:
+              console.log('User pressed an action button (Foreground)', detail.notification);
+              //navigation.navigate('DetalhesMonumento', { poi });
+              //console.log('major: ', minorM);
+              break;
+      }
+
+    });
+  }, []);
+
+  useEffect(() => {
+    return notifee.onBackgroundEvent( async({ type, detail }) => {
+
+      if(type === EventType.PRESS){
+        console.log('User pressed an action button (Background)', detail.notification);
+        
+      }
+
+    });
+  }, []);
+
+
+
+  
+
+
   const handleImageClick = (poi) => {
     // Navega para a tela de detalhes e passa os dados do monumento como parâmetro
     navigation.navigate('DetalhesMonumento', { poi });
+    //console.log('DADOS DO POI',poi);
   };
 
   return (
@@ -73,14 +166,27 @@ const ListaMonumentos = () => {
       <FlatList
         data={data}
         keyExtractor={(item) => item.id.toString()}
+        
         numColumns={2} // Display 2 POIs per row
         renderItem={({ item }) => (
+
+          
           <TouchableOpacity
             style={[styles.poiContainer, { marginRight: 3}, { marginLeft: -1}]}
-            onPress={() => handleImageClick(item)}
+            onPress={() => handleImageClick(item)}           
           >
             <Image source={{ uri: item.cover_image }} style={styles.image} />
             <Text style={styles.customText}>{getPoiName(item, i18n.language)}</Text>
+            
+            {item.beacons.map((beaconData, index) => (
+              
+          <View key={index}>
+          <Text>Beacon {index + 1}:</Text>
+          <Text>UUID: {beaconData.uuid}</Text>
+          <Text>Major: {beaconData.major}</Text>
+          <Text>Minor: {beaconData.minor}</Text>
+          </View>
+        ))}
           </TouchableOpacity>
         )}
       />
@@ -113,4 +219,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListaMonumentos;
+export { ListaMonumentos, startBeaconScan };

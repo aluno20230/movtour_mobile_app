@@ -8,12 +8,12 @@ import './src/config/I18N/i18n';
 import { useTranslation } from 'react-i18next';
 import TipodeConteudo from './src/TipodeConteudo';
 import { createStackNavigator } from '@react-navigation/stack';
-import ListaMonumentos from './src/Monumentos'; // Importa a lista de monumentos
+import { ListaMonumentos ,startBeaconScan } from './src/Monumentos'; // Importa a lista de monumentos
 import DetalhesMonumento from './src/DetalhesMonumento'; // Importea os detalhes de monumentos
 import MapaMonumento  from './src/MapaMonumento';// Importa o mapa com a localização de monumentos
 import { PermissionsAndroid } from 'react-native';
 import React, { useEffect } from 'react';
-import { startBeaconScan } from './src/BLE';
+//import { ListaMomumentos ,startBeaconScan } from './src/BLE';
 
 
 

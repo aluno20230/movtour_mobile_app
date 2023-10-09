@@ -73,24 +73,27 @@ async function startBeaconScan() {
     }
 
     if (Array.isArray(jsonData.monuments)) {
-      //console.log('Monuments data found:', jsonData.monuments);
       jsonData.monuments.forEach((monument) => {
-        //console.log('Beacon data found for monument:', monument.name);
-        if (Array.isArray(monument.pois) && monument.pois.length > 0 && Array.isArray(monument.pois[0].beacons)) {
-          monument.pois[0].beacons.forEach((beaconData) => {
-            if (
-              //beaconData.uuid === device.id &&
-              beaconData.major === majorM &&
-              beaconData.minor === minorM
-            ) {
-              console.log('Found matching beacon in JSON data:', beaconData);
-              console.log('POI Data:', monument.pois[0]);
-              const poi = monument.pois[0];
-              navigation.navigate('DetalhesMonumento', { poi });
+        if (Array.isArray(monument.pois)) {
+          monument.pois.forEach((poi) => {
+            if (Array.isArray(poi.beacons)) {
+              poi.beacons.forEach((beaconData) => {
+                if (
+                  //beaconData.uuid === device.id &&
+                  beaconData.major === majorM &&
+                  beaconData.minor === minorM
+                ) {
+                  console.log('Found matching beacon in JSON data:', beaconData);
+                  console.log('POI Data:', poi);
+                  navigation.navigate('DetalhesMonumento', { poi });
+                }
+              });
+            } else {
+              console.error('POI has no beacon data or invalid data:', poi);
             }
           });
         } else {
-          console.error('Monument has no beacon data or invalid data:', monument);
+          console.error('Monument has no POI data or invalid data:', monument);
         }
       });
     } else {

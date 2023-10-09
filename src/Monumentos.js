@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList, Text, Image, Dimensions, TouchableOpacity, Button   } from 'react-native';
+import { StyleSheet, View, FlatList, Text, Image, Dimensions, TouchableOpacity, Button } from 'react-native';
 import './config/I18N/i18n';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -10,7 +10,7 @@ import { NativeScreen } from 'react-native-screens';
 import { BleManager } from 'react-native-ble-plx';
 import { displayNotification } from './Notification';
 import RNFetchBlob from 'rn-fetch-blob';
-import {stringToBytes} from 'convert-string';
+import { stringToBytes } from 'convert-string';
 import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
 //import React, { useEffect, useState } from 'react';
 //import { NativeScreen } from 'react-native-screens';
@@ -18,9 +18,28 @@ import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
 
 const { width } = Dimensions.get('window');
 const bleManager = new BleManager();
+const jsonDataUrl = 'https://movtour.ipt.pt/monuments.json';
+const navigation = useNavigation();
+
+async function fetchJsonData() {
+  try {
+    const response = await fetch(jsonDataUrl);
+    const jsonData = await response.json();
+    return jsonData;
+  } catch (error) {
+    console.error('Error fetching JSON data:', error);
+    return null;
+  }
+}
 
 // Scan for BLE devices (beacons) and listen for advertisements
-function startBeaconScan() {
+async function startBeaconScan() {
+  const jsonData = await fetchJsonData();
+
+  if (!jsonData) {
+    console.error('Failed to fetch JSON data. Cannot compare beacons.');
+    return;
+  }
 
   bleManager.startDeviceScan(null, null, (error, device) => {
     if (error) {
@@ -29,18 +48,18 @@ function startBeaconScan() {
       return;
     }
 
-    
-      const base64 = RNFetchBlob.base64;
-      const advertisingData = stringToBytes(base64.decode(device.manufacturerData),);
-      const rssi = device.rssi;
-      const name = device.localName;
-      const majorM = advertisingData[21]; // => this is major data
-      const minorM = advertisingData[23]; // this is minor data
 
-      //console.log('majorM: ', majorM);
-      //console.log('minorM: ', minorM);
+    const base64 = RNFetchBlob.base64;
+    const advertisingData = stringToBytes(base64.decode(device.manufacturerData),);
+    const rssi = device.rssi;
+    const name = device.localName;
+    const majorM = advertisingData[21]; // => this is major data
+    const minorM = advertisingData[23]; // this is minor data
 
-      //console.log('Found BLE device:', device.name, device.id);
+    //console.log('majorM: ', majorM);
+    //console.log('minorM: ', minorM);
+
+    //console.log('Found BLE device:', device.name, device.id);
 
     // Check if the detected device is a beacon based on its properties
     if (majorM == 0 && minorM == 70) {
@@ -49,9 +68,34 @@ function startBeaconScan() {
     }
 
     if (majorM == 0 && minorM == 8) {
-        console.log('Encontrei o beacon do Rafael, com o major:', majorM, 'e o minor:', minorM);
-        displayNotification();
-      }
+      console.log('Encontrei o beacon do Rafael, com o major:', majorM, 'e o minor:', minorM);
+      displayNotification();
+    }
+
+    if (Array.isArray(jsonData.monuments)) {
+      //console.log('Monuments data found:', jsonData.monuments);
+      jsonData.monuments.forEach((monument) => {
+        //console.log('Beacon data found for monument:', monument.name);
+        if (Array.isArray(monument.pois) && monument.pois.length > 0 && Array.isArray(monument.pois[0].beacons)) {
+          monument.pois[0].beacons.forEach((beaconData) => {
+            if (
+              //beaconData.uuid === device.id &&
+              beaconData.major === majorM &&
+              beaconData.minor === minorM
+            ) {
+              console.log('Found matching beacon in JSON data:', beaconData);
+              console.log('POI Data:', monument.pois[0]);
+              const poi = monument.pois[0];
+              navigation.navigate('DetalhesMonumento', { poi });
+            }
+          });
+        } else {
+          console.error('Monument has no beacon data or invalid data:', monument);
+        }
+      });
+    } else {
+      console.error('No monuments data found in JSON:', jsonData);
+    }
 
 
   });
@@ -61,7 +105,7 @@ function startBeaconScan() {
 
 const ListaMonumentos = () => {
   const { t, i18n } = useTranslation();
-  const navigation = useNavigation();
+  
   const [data, setData] = useState([]);
 
   const getPoiName = (item, selectedLanguage) => {
@@ -90,7 +134,7 @@ const ListaMonumentos = () => {
       .catch((error) => {
         console.error('Error fetching cached data:', error);
       });
-  
+
     // Fetch new data from the internet
     fetch('https://movtour.ipt.pt/monuments.json')
       .then((response) => response.json())
@@ -98,12 +142,7 @@ const ListaMonumentos = () => {
         // Flatten the data array to get all POIs
         const allPois = jsonData.monuments.flatMap((monument) => monument.pois);
         setData(allPois);
-        const beaconsData = jsonData.monuments.map((monument) => ({
-          beacon: monument.beacons || '', // Replace 'monument.beacons' with the correct path to your beacon data
-          major: monument.major || 0, // Replace 'monument.major' with the correct path to your major data
-          minor: monument.minor || 0, // Replace 'monument.minor' with the correct path to your minor data
-        }));
-  
+
         // Store the fetched data locally for offline use
         AsyncStorage.setItem('cachedData', JSON.stringify(allPois))
           .then(() => {
@@ -119,31 +158,31 @@ const ListaMonumentos = () => {
   }, []);
 
 
-  
+
   useEffect(() => {
 
     return notifee.onForegroundEvent(({ type, detail }) => {
 
       switch (type) {
-          case EventType.DISMISSED:
-              console.log('User dismissed notification');
-              break;
-          case EventType.PRESS:
-              console.log('User pressed an action button (Foreground)', detail.notification);
-              //navigation.navigate('DetalhesMonumento', { poi });
-              //console.log('major: ', minorM);
-              break;
+        case EventType.DISMISSED:
+          console.log('User dismissed notification');
+          break;
+        case EventType.PRESS:
+          console.log('User pressed an action button (Foreground)', detail.notification);
+          //navigation.navigate('DetalhesMonumento', { poi });
+          //console.log('major: ', minorM);
+          break;
       }
 
     });
   }, []);
 
   useEffect(() => {
-    return notifee.onBackgroundEvent( async({ type, detail }) => {
+    return notifee.onBackgroundEvent(async ({ type, detail }) => {
 
-      if(type === EventType.PRESS){
+      if (type === EventType.PRESS) {
         console.log('User pressed an action button (Background)', detail.notification);
-        
+
       }
 
     });
@@ -151,13 +190,13 @@ const ListaMonumentos = () => {
 
 
 
-  
+
 
 
   const handleImageClick = (poi) => {
     // Navega para a tela de detalhes e passa os dados do monumento como parâmetro
     navigation.navigate('DetalhesMonumento', { poi });
-    //console.log('DADOS DO POI',poi);
+    console.log('DADOS DO POI -->',poi);
   };
 
   return (
@@ -166,27 +205,27 @@ const ListaMonumentos = () => {
       <FlatList
         data={data}
         keyExtractor={(item) => item.id.toString()}
-        
+
         numColumns={2} // Display 2 POIs per row
         renderItem={({ item }) => (
 
-          
+
           <TouchableOpacity
-            style={[styles.poiContainer, { marginRight: 3}, { marginLeft: -1}]}
-            onPress={() => handleImageClick(item)}           
+            style={[styles.poiContainer, { marginRight: 3 }, { marginLeft: -1 }]}
+            onPress={() => handleImageClick(item)}
           >
             <Image source={{ uri: item.cover_image }} style={styles.image} />
             <Text style={styles.customText}>{getPoiName(item, i18n.language)}</Text>
-            
+
             {item.beacons.map((beaconData, index) => (
-              
-          <View key={index}>
-          <Text>Beacon {index + 1}:</Text>
-          <Text>UUID: {beaconData.uuid}</Text>
-          <Text>Major: {beaconData.major}</Text>
-          <Text>Minor: {beaconData.minor}</Text>
-          </View>
-        ))}
+
+              <View key={index}>
+                <Text>Beacon {index + 1}:</Text>
+                <Text>UUID: {beaconData.uuid}</Text>
+                <Text>Major: {beaconData.major}</Text>
+                <Text>Minor: {beaconData.minor}</Text>
+              </View>
+            ))}
           </TouchableOpacity>
         )}
       />

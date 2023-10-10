@@ -32,6 +32,7 @@ async function fetchJsonData() {
   }
 }
 
+
 // Scan for BLE devices (beacons) and listen for advertisements
 async function startBeaconScan() {
   const jsonData = await fetchJsonData();
@@ -63,15 +64,16 @@ async function startBeaconScan() {
 
     // Check if the detected device is a beacon based on its properties
     if (majorM == 0 && minorM == 70) {
-      console.log('Encontrei o beacon do Rui, com o major:', majorM, 'e o minor:', minorM);
-      displayNotification();
+      //console.log('Encontrei o beacon do Rui, com o major:', majorM, 'e o minor:', minorM);
+      //displayNotification();
     }
 
     if (majorM == 0 && minorM == 8) {
-      console.log('Encontrei o beacon do Rafael, com o major:', majorM, 'e o minor:', minorM);
-      displayNotification();
+      //console.log('Encontrei o beacon do Rafael, com o major:', majorM, 'e o minor:', minorM);
+      //displayNotification();
     }
 
+     
     if (Array.isArray(jsonData.monuments)) {
       jsonData.monuments.forEach((monument) => {
         if (Array.isArray(monument.pois)) {
@@ -83,14 +85,21 @@ async function startBeaconScan() {
                   beaconData.major === majorM &&
                   beaconData.minor === minorM
                 ) {
-                  console.log('Found matching beacon in JSON data:', beaconData);
-                  console.log('POI Data:', poi);
-                  navigation.navigate('DetalhesMonumento', { poi });
+                  //console.log('Found matching beacon in JSON data:', beaconData);
+                  //console.log('POI Data:', poi);
+                  console.log('Encontrei o beacon, com o major:', majorM, 'e o minor:', minorM);
+                  displayNotification();
+                  //navigation.navigate('DetalhesMonumento', { poi });
                 }
+
+                
+
               });
             } else {
               console.error('POI has no beacon data or invalid data:', poi);
             }
+
+            console.log('Teste2:*********************************', poi);
           });
         } else {
           console.error('Monument has no POI data or invalid data:', monument);
@@ -102,7 +111,39 @@ async function startBeaconScan() {
 
 
   });
+
+  /* useEffect(() => {
+
+    return notifee.onForegroundEvent(({ type, detail }) => {
+
+      switch (type) {
+        case EventType.DISMISSED:
+          console.log('User dismissed notification');
+          break;
+        case EventType.PRESS:
+          console.log('User pressed an action button (Foreground)', detail.notification);
+          //navigation.navigate('DetalhesMonumento', { poi });
+          //console.log('major: ', minorM);
+          break;
+      }
+
+    });
+  }, []);
+
+  useEffect(() => {
+    return notifee.onBackgroundEvent(async ({ type, detail }) => {
+
+      if (type === EventType.PRESS) {
+        console.log('User pressed an action button (Background)', detail.notification);
+
+      }
+
+    });
+  }, []); */
+  
+
 }
+
 
 
 
@@ -173,7 +214,7 @@ const ListaMonumentos = () => {
         case EventType.PRESS:
           console.log('User pressed an action button (Foreground)', detail.notification);
           //navigation.navigate('DetalhesMonumento', { poi });
-          //console.log('major: ', minorM);
+          //console.log('POI****************************************: ', poi);
           break;
       }
 
@@ -220,6 +261,7 @@ const ListaMonumentos = () => {
             <Image source={{ uri: item.cover_image }} style={styles.image} />
             <Text style={styles.customText}>{getPoiName(item, i18n.language)}</Text>
 
+            {/*}
             {item.beacons.map((beaconData, index) => (
 
               <View key={index}>
@@ -229,6 +271,8 @@ const ListaMonumentos = () => {
                 <Text>Minor: {beaconData.minor}</Text>
               </View>
             ))}
+              */}
+
           </TouchableOpacity>
         )}
       />

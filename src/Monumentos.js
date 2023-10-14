@@ -56,6 +56,7 @@ async function startBeaconScan() {
     const name = device.localName;
     const majorM = advertisingData[21]; // => this is major data
     const minorM = advertisingData[23]; // this is minor data
+    //const poiteste = navigation.getParam('poi');
 
     //console.log('majorM: ', majorM);
     //console.log('minorM: ', minorM);
@@ -88,7 +89,8 @@ async function startBeaconScan() {
                   //console.log('Found matching beacon in JSON data:', beaconData);
                   //console.log('POI Data:', poi);
                   console.log('Encontrei o beacon, com o major:', majorM, 'e o minor:', minorM);
-                  displayNotification();
+                  displayNotification(poi);
+                  //console.log('POI Data:', poi);
                   //navigation.navigate('DetalhesMonumento', { poi });
                 }
 
@@ -98,8 +100,6 @@ async function startBeaconScan() {
             } else {
               console.error('POI has no beacon data or invalid data:', poi);
             }
-
-            console.log('Teste2:*********************************', poi);
           });
         } else {
           console.error('Monument has no POI data or invalid data:', monument);
@@ -112,35 +112,7 @@ async function startBeaconScan() {
 
   });
 
-  /* useEffect(() => {
-
-    return notifee.onForegroundEvent(({ type, detail }) => {
-
-      switch (type) {
-        case EventType.DISMISSED:
-          console.log('User dismissed notification');
-          break;
-        case EventType.PRESS:
-          console.log('User pressed an action button (Foreground)', detail.notification);
-          //navigation.navigate('DetalhesMonumento', { poi });
-          //console.log('major: ', minorM);
-          break;
-      }
-
-    });
-  }, []);
-
-  useEffect(() => {
-    return notifee.onBackgroundEvent(async ({ type, detail }) => {
-
-      if (type === EventType.PRESS) {
-        console.log('User pressed an action button (Background)', detail.notification);
-
-      }
-
-    });
-  }, []); */
-  
+   
 
 }
 
@@ -212,8 +184,9 @@ const ListaMonumentos = () => {
           console.log('User dismissed notification');
           break;
         case EventType.PRESS:
-          console.log('User pressed an action button (Foreground)', detail.notification);
-          //navigation.navigate('DetalhesMonumento', { poi });
+          console.log('User pressed an action button (Foreground)'/*, detail.notification, detail.notification.data.poi*/);
+          const poi = detail.notification.data.poi;
+          navigation.navigate('DetalhesMonumento', { poi });
           //console.log('POI****************************************: ', poi);
           break;
       }
@@ -225,12 +198,15 @@ const ListaMonumentos = () => {
     return notifee.onBackgroundEvent(async ({ type, detail }) => {
 
       if (type === EventType.PRESS) {
-        console.log('User pressed an action button (Background)', detail.notification);
-
+        console.log('User pressed an action button (Background)'/*, detail.notification*/);
+        const poi = detail.notification.data.poi;
+        navigation.navigate('DetalhesMonumento', { poi });
       }
 
     });
   }, []);
+
+  
 
 
 

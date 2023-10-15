@@ -14,7 +14,9 @@
         "Aprofundamento" : "Approfondissement",
         "Investigação" : "Enquête",
         "Tipo de conteúdo" : "Inhaltstyp",
-        "Monumentos" : "Denkmäler"
+        "Monumentos" : "Denkmäler",
+        " Monumentos" : " Denkmäler",
+        "Filmes ou séries gravados neste local:" : "An diesem Ort aufgenommene Filme oder Serien:"
         
     }
 }

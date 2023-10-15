@@ -6,7 +6,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import './src/config/I18N/i18n';
 import { useTranslation } from 'react-i18next';
-import TipodeConteudo from './src/TipodeConteudo';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ListaMonumentos ,startBeaconScan } from './src/Monumentos'; // Importa a lista de monumentos
 import DetalhesMonumento from './src/DetalhesMonumento'; // Importea os detalhes de monumentos
@@ -16,10 +15,8 @@ import React, { useEffect } from 'react';
 //import { ListaMomumentos ,startBeaconScan } from './src/BLE';
 
 
-
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
-
   
 
 function StackNavigator() {
@@ -119,22 +116,7 @@ function DrawerNavigator() {
                 />
                ),
             }}/>
-      <Drawer.Screen name={t('Tipo de conteúdo')} component={TipodeConteudo} 
-      options={{
-        headerTitleAlign: 'center', // Center align the header title
-          headerStyle: {
-            backgroundColor: '#E8E8E8', // Make the header background transparent
-              },
-              headerTitle: () => (
-                  <Image
-                    source={require('./src/config/pictures/movtour_logo.png')}
-                    style={{
-                    width: 50, 
-                    height: 50,
-                  }}
-                />
-               ),
-            }}/>
+      
     </Drawer.Navigator>
   );
 }

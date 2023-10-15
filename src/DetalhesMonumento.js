@@ -13,7 +13,7 @@ const DetalhesMonumento = ({ route }) => {
   const navigation = useNavigation();
   const [selectedContentType, setSelectedContentType] = useState('Iniciação'); // Initialize selectedContentType with a default value
   const [showIMDbPage, setShowIMDbPage] = useState(false);
-  const [imdbUrl, setImdbUrl] = useState(''); 
+  const [imdbUrl, setImdbUrl] = useState('');
 
 
 
@@ -37,7 +37,7 @@ const DetalhesMonumento = ({ route }) => {
     setShowIMDbPage(false);
     setImdbUrl(''); // Clear the IMDb URL
   };
-  
+
   const handleButtonPress = () => {
     navigation.navigate('MapaMonumento', { htmlScript });
   };
@@ -70,77 +70,82 @@ const DetalhesMonumento = ({ route }) => {
   </body>
   </html>
 `;
-const [decodedDescription, setDecodedDescription] = useState(''); // Initialize decodedDescription
+  const [decodedDescription, setDecodedDescription] = useState(''); // Initialize decodedDescription
 
-const handleContentTypeChange = (contentType) => {
-  setSelectedContentType(contentType);
-};
-useEffect(() => {
-  console.log('selectedContentType:', selectedContentType);
-  // Access the description of the selected POI based on selectedDescriptionType
-  const descriptionObject = poi.poi_descriptions.find(
-    (description) => description.description_type_name === selectedContentType
-  );
+  const handleContentTypeChange = (contentType) => {
+    setSelectedContentType(contentType);
+  };
+  useEffect(() => {
+    console.log('selectedContentType:', selectedContentType);
+    // Access the description of the selected POI based on selectedDescriptionType
+    const descriptionObject = poi.poi_descriptions.find(
+      (description) => description.description_type_name === selectedContentType
+    );
 
-  // Get the description based on the selected language
-  const selectedLanguageDescription = descriptionObject
-    ? descriptionObject[`description_${i18n.language}`]
-    : 'Description not found';
+    // Get the description based on the selected language
+    const selectedLanguageDescription = descriptionObject
+      ? descriptionObject[`description_${i18n.language}`]
+      : 'Description not found';
 
-  const plainTextDescription = selectedLanguageDescription.replace(/<[^>]*>/g, '');
-  const decodedDescription = he.decode(plainTextDescription);
-  
+    const plainTextDescription = selectedLanguageDescription.replace(/<[^>]*>/g, '');
+    const decodedDescription = he.decode(plainTextDescription);
 
-  // Update the decodedDescription when selectedDescriptionType changes
-  setDecodedDescription(decodedDescription);
-}, [selectedContentType]);
+
+    // Update the decodedDescription when selectedDescriptionType changes
+    setDecodedDescription(decodedDescription);
+  }, [selectedContentType]);
 
   return (
     <View style={styles.container}>
-    {showIMDbPage ? (
-      // Display only the WebView when showIMDbPage is true
-      <WebView source={{ uri: imdbUrl }} onError={(syntheticEvent) => console.error('WebView error:', syntheticEvent.nativeEvent)} />
-    ) : (
-      // Display the rest of the content when showIMDbPage is false
-      <ScrollView>
-        <Image source={{ uri: poi.cover_image }} style={styles.image} />
-        <Text style={styles.monumentName}>{t(poi[`name_${i18n.language}`])}</Text>
-        <TouchableOpacity onPress={handleButtonPress} style={styles.iconButton}>
-          <FontAwesomeIcon name="map-pin" size={30} color="#E36509" /><FontAwesomeIcon  />
-        </TouchableOpacity>
-        <View style={styles.buttonsContainer}>
-          {contentTypes.map((contentType) => (
-            <TouchableOpacity
-              key={contentType}
-              onPress={() => handleContentTypeChange(contentType)}
-              style={styles.button}
-            >
-              <Text>{contentType}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-        <Text style={styles.container}>{decodedDescription}</Text>
-        
-        {poi.movies.length > 0 && (
-          <>
-            <Text style={styles.movieHeaderText}>{t('Filmes ou séries gravados neste local:')}</Text>
+      {showIMDbPage ? (
+        // Display only the WebView when showIMDbPage is true
+        <WebView source={{ uri: imdbUrl }} onError={(syntheticEvent) => console.error('WebView error:', syntheticEvent.nativeEvent)} />
+      ) : (
+        // Display the rest of the content when showIMDbPage is false
+        <ScrollView>
+          <Image source={{ uri: poi.cover_image }} style={styles.image} />
+          <Text style={styles.monumentName}>{t(poi[`name_${i18n.language}`])}</Text>
+          <TouchableOpacity onPress={handleButtonPress} style={styles.iconButton}>
+            <FontAwesomeIcon name="map-pin" size={30} color="#E36509" /><FontAwesomeIcon />
+          </TouchableOpacity>
+          <View style={styles.buttonsContainer}>
+            {contentTypes.map((contentType) => (
+              <TouchableOpacity
+                key={contentType}
+                onPress={() => handleContentTypeChange(contentType)}
+                style={styles.button}
+              >
+                <Text>
+                  {contentType === 'Iniciação' ? t('Iniciação') :
+                    contentType === 'Divulgação' ? t('Divulgação') :
+                      contentType === 'Aprofundamento' ? t('Aprofundamento') :
+                        contentType === 'Investigação' ? t('Investigação') : null}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <Text style={styles.container}>{decodedDescription}</Text>
 
-            <ScrollView horizontal={true}>
-            <View style={styles.movieList}>
-              {poi.movies.map((movie, index) => (
-                 <View key={`${movie.id}-${index}`} style={styles.movieItem}>
-                  <TouchableOpacity onPress={() => handleMovieIconPress(movie.imdb)}>
-                    <Image source={{ uri: movie.poster }} style={styles.poster} />
-                  </TouchableOpacity>
+          {poi.movies.length > 0 && (
+            <>
+              <Text style={styles.movieHeaderText}>{t('Filmes ou séries gravados neste local:')}</Text>
+
+              <ScrollView horizontal={true}>
+                <View style={styles.movieList}>
+                  {poi.movies.map((movie, index) => (
+                    <View key={`${movie.id}-${index}`} style={styles.movieItem}>
+                      <TouchableOpacity onPress={() => handleMovieIconPress(movie.imdb)}>
+                        <Image source={{ uri: movie.poster }} style={styles.poster} />
+                      </TouchableOpacity>
+                    </View>
+                  ))}
                 </View>
-              ))}
-            </View>
-            </ScrollView>
-          </>
-        )}
-      </ScrollView>
-    )}
-  </View>
+              </ScrollView>
+            </>
+          )}
+        </ScrollView>
+      )}
+    </View>
   );
 };
 
@@ -157,20 +162,20 @@ const styles = StyleSheet.create({
     borderWidth: 2, // Adjust the border width as needed
     borderColor: '#CB7C05', // Change to your desired border color
     position: 'relative',
-  }, 
+  },
   poster: {
     width: '100%', // Take the full width of the parent container
-    height: 100,   // Set a fixed height of 100
-    aspectRatio: 16 / 9, // Maintain a 16:9 aspect ratio (adjust as needed)
+    height: 400,   // Set a fixed height of 100
+    aspectRatio: 12 / 20, // Maintain a 16:9 aspect ratio (adjust as needed)
     resizeMode: 'cover',
     borderWidth: 2, // Adjust the border width as needed
     borderColor: '#CB7C05', // Change to your desired border color
   },
   button: {
     backgroundColor: '#E36509', // Background color of the button
-    padding: 5, // Adjust padding as needed
+    padding: 4, // Adjust padding as needed
     borderRadius: 10, // Add rounded corners
-    marginTop: 2, 
+    marginTop: 2,
     alignItems: 'center', // Center align text horizontally
   },
   movieList: {
@@ -184,8 +189,8 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     position: 'absolute',
-    top: 260, 
-    left: 350,
+    top: 260,
+    left: '90%',
     backgroundColor: 'transparent',
     alignItems: 'center', // Center align text horizontall
     padding: 2,

@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import he from 'he';
 import MapView from 'react-native-maps';
 import{ WebView } from 'react-native-webview';
-import html_script from './html_script'
 
 const MapaMonumento = ({ route }) => {
     const { monument } = route.params;

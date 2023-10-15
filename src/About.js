@@ -30,9 +30,9 @@ export default function About() {
         <View style={styles.imagesContainer}>
             <View style={styles.imageWrapper}>
               <Image
+                source={require('./config/pictures/movtour.png')}
                 resizeMode={'contain'}
                 style={styles.images}
-                source={require('./config/pictures/movtour.png')}
               />
             </View>
 

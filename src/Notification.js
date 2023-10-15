@@ -1,8 +1,6 @@
 import notifee, { AndroidImportance, AndroidVisibility } from '@notifee/react-native';
 
 
-
-
 async function displayNotification(poi) {
 
   await notifee.requestPermission();
@@ -12,7 +10,6 @@ async function displayNotification(poi) {
     name: 'sales',
     vibration: true,
     importance: AndroidImportance.HIGH,
-    
   });
 
   await notifee.displayNotification({

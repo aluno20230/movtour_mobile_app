@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList, Text, Image, Dimensions, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, View, FlatList, Text, Image, Dimensions, TouchableOpacity, Button, AppState } from 'react-native';
 import './config/I18N/i18n';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeScreen } from 'react-native-screens';
-//import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
-
 import { BleManager } from 'react-native-ble-plx';
 import { displayNotification } from './Notification';
 import RNFetchBlob from 'rn-fetch-blob';
 import { stringToBytes } from 'convert-string';
 import notifee, { AndroidImportance, EventType } from '@notifee/react-native';
-//import React, { useEffect, useState } from 'react';
-//import { NativeScreen } from 'react-native-screens';
+import { use } from 'i18next';
+import { Alert } from 'react-native';
+
+
 
 
 const { width } = Dimensions.get('window');
@@ -31,6 +31,7 @@ async function fetchJsonData() {
     return null;
   }
 }
+
 
 
 // Scan for BLE devices (beacons) and listen for advertisements
@@ -56,7 +57,7 @@ async function startBeaconScan() {
     const name = device.localName;
     const majorM = advertisingData[21]; // => this is major data
     const minorM = advertisingData[23]; // this is minor data
-    //const poiteste = navigation.getParam('poi');
+    const appState = AppState.currentState;
 
     //console.log('majorM: ', majorM);
     //console.log('minorM: ', minorM);
@@ -64,17 +65,17 @@ async function startBeaconScan() {
     //console.log('Found BLE device:', device.name, device.id);
 
     // Check if the detected device is a beacon based on its properties
-    if (majorM == 0 && minorM == 70) {
-      //console.log('Encontrei o beacon do Rui, com o major:', majorM, 'e o minor:', minorM);
-      //displayNotification();
-    }
+    //if (majorM == 0 && minorM == 70) {
+    //console.log('Encontrei o beacon do Rui, com o major:', majorM, 'e o minor:', minorM);
+    //displayNotification();
+    //}
 
-    if (majorM == 0 && minorM == 8) {
-      //console.log('Encontrei o beacon do Rafael, com o major:', majorM, 'e o minor:', minorM);
-      //displayNotification();
-    }
+    //if (majorM == 0 && minorM == 8) {
+    //console.log('Encontrei o beacon do Rafael, com o major:', majorM, 'e o minor:', minorM);
+    //displayNotification();
+    //}
 
-     
+
     if (Array.isArray(jsonData.monuments)) {
       jsonData.monuments.forEach((monument) => {
         if (Array.isArray(monument.pois)) {
@@ -82,20 +83,36 @@ async function startBeaconScan() {
             if (Array.isArray(poi.beacons)) {
               poi.beacons.forEach((beaconData) => {
                 if (
-                  //beaconData.uuid === device.id &&
                   beaconData.major === majorM &&
                   beaconData.minor === minorM
                 ) {
                   //console.log('Found matching beacon in JSON data:', beaconData);
+                  //console.log('Encontrei o beacon, com o major:', majorM, 'e o minor:', minorM);
                   //console.log('POI Data:', poi);
-                  console.log('Encontrei o beacon, com o major:', majorM, 'e o minor:', minorM);
-                  displayNotification(poi);
-                  //console.log('POI Data:', poi);
-                  //navigation.navigate('DetalhesMonumento', { poi });
+
+
+                  if (appState === 'active') {
+                    navigation.navigate('DetalhesMonumento', { poi });
+                    console.log('Estado da app', appState);
+                  }
+
+                  if (appState === 'background') {
+                    //navigation.navigate('DetalhesMonumento', { poi });
+                    displayNotification(poi);
+                    console.log('Estado da app', appState);
+                  }
+
+                  //Hora do Scan
+                  const now = new Date();
+                  const hours = now.getHours().toString().padStart(2, '0');
+                  const minutes = now.getMinutes().toString().padStart(2, '0');
+                  const seconds = now.getSeconds().toString().padStart(2, '0');
+                  console.log(`Último scan ocorreu às: ${hours}:${minutes}:${seconds}`);
+
+
+
+
                 }
-
-                
-
               });
             } else {
               console.error('POI has no beacon data or invalid data:', poi);
@@ -112,7 +129,7 @@ async function startBeaconScan() {
 
   });
 
-   
+
 
 }
 
@@ -121,7 +138,7 @@ async function startBeaconScan() {
 
 const ListaMonumentos = () => {
   const { t, i18n } = useTranslation();
-  
+
   const [data, setData] = useState([]);
 
   const getPoiName = (item, selectedLanguage) => {
@@ -206,17 +223,13 @@ const ListaMonumentos = () => {
     });
   }, []);
 
-  
-
-
-
 
 
 
   const handleImageClick = (poi) => {
     // Navega para a tela de detalhes e passa os dados do monumento como parâmetro
     navigation.navigate('DetalhesMonumento', { poi });
-    console.log('DADOS DO POI -->',poi);
+    //console.log('DADOS DO POI -->', poi);
   };
 
   return (
